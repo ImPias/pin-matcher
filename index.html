@@ -39,19 +39,19 @@
                             <div class="calc-button-row">
                                 <div onclick="backspace()" class="button"><</div>
                                 <div onclick="pinDisplay(0)" class="button">0</div>
-                                <div onclick="clear()" class="button">C</div>
+                                <div onclick="clean()" class="button">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button disabled onclick="match()" id="submit" type="submit" class="submit-btn">Submit</button>
+                                <p id="action-left" class="action-left">3 try left</p>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify notify-error">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify notify-success">✅ Pin Matched... Secret door is opening for you</p>
+            <p id="notify-error" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="notify-success" class="notify">✅ Pin Matched... Secret door is opening for you</p>
         </div>
     </div>
     <script>
@@ -62,6 +62,10 @@
             pin = Math.round((Math.random() + 1) * 1000);
             document.getElementById('pin-box').value = pin;
             tryLeft = 3;
+            document.getElementById('action-left').style.display = 'block';
+            document.getElementById('action-left').innerText = tryLeft + " try left";
+            document.getElementById('submit').disabled = false;
+            document.getElementById('display').value = "";
         }
 
         function pinDisplay(value){
@@ -79,15 +83,33 @@
             currentDisplayValue = document.getElementById('display').value;
             currentValueNumber = parseInt(currentDisplayValue);
             if(currentDisplayValue == ""){
-                clear();
+                clean();
             } else {
                 valueAfterBackspace = currentValueNumber / 10;
                 document.getElementById('display').value = Math.floor(valueAfterBackspace);
             }
         }
 
-        function clear(){
+        function clean(){
             document.getElementById('display').value = "";
+        }
+
+        function match(){
+            let typedPin = parseInt(document.getElementById('display').value);
+            if( pin == typedPin){
+                document.getElementById('notify-success').style.display = 'block';
+                document.getElementById('notify-error').style.display = 'none';
+                document.getElementById('action-left').style.display = 'none';
+                document.getElementById('submit').disabled = true;
+            } else {
+                document.getElementById('notify-error').style.display = 'block';
+                document.getElementById('notify-success').style.display = 'none';
+                tryLeft--;
+                document.getElementById('action-left').innerText = tryLeft + " try left";
+                if(tryLeft == 0){
+                    document.getElementById('submit').disabled = true;
+                }
+            }
         }
     </script>
 </body>

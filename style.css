@@ -101,10 +101,11 @@ color: #E0B612;
     width: 35%;
     margin: 0 auto;
 }
-.notify-error, .notify-success{
+#notify-error, #notify-success{
     display: none;
 }
 .action-left {
     color: #FF3C5F;
     margin-top: 10px;
+    display: none;
 }
